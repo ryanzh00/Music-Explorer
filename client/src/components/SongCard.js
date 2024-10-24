@@ -6,18 +6,11 @@ import { NavLink } from 'react-router-dom';
 import { formatDuration } from '../helpers/formatter';
 const config = require('../config.json');
 
-// SongCard is a modal (a common example of a modal is a dialog window).
-// Typically, modals will conditionally appear (specified by the Modal's open property)
-// but in our implementation whether the Modal is open is handled by the parent component
-// (see HomePage.js for example), since it depends on the state (selectedSongId) of the parent
 export default function SongCard({ songId, handleClose }) {
   const [songData, setSongData] = useState({});
   const [albumData, setAlbumData] = useState({});
   const [barRadar, setBarRadar] = useState(true);
 
-  // TODO (TASK 20): fetch the song specified in songId and based on the fetched album_id also fetch the album data
-  // Hint: you need to both fill in the callback and the dependency array (what variable determines the information you need to fetch?)
-  // Hint: since the second fetch depends on the information from the first, try nesting the second fetch within the then block of the first (pseudocode is provided)
   useEffect(() => {
     if (songId) {
       fetch(`http://${config.server_host}:${config.server_port}/song/${songId}`)
@@ -64,7 +57,7 @@ export default function SongCard({ songId, handleClose }) {
           <Button disabled={!barRadar} onClick={handleGraphChange}>Radar</Button>
         </ButtonGroup>
         <div style={{ margin: 20 }}>
-          { // This ternary statement returns a BarChart if barRadar is true, and a RadarChart otherwise
+          {
             barRadar
               ? (
                 <ResponsiveContainer height={250}>
@@ -80,9 +73,6 @@ export default function SongCard({ songId, handleClose }) {
                 </ResponsiveContainer>
               ) : (
                 <ResponsiveContainer height={250}>
-                  {/* TODO (TASK 21): display the same data as the bar chart using a radar chart */}
-                  {/* Hint: refer to documentation at https://recharts.org/en-US/api/RadarChart */}
-                  {/* Hint: note you can omit the <Legend /> element and only need one Radar element, as compared to the sample in the docs */}
                   <RadarChart outerRadius={90} width={730} height={250} data={chartData}>
                     <PolarGrid />
                     <PolarAngleAxis dataKey="name" />
